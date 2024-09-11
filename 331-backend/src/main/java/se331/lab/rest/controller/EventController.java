@@ -3,6 +3,7 @@ package se331.lab.rest.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import se331.lab.rest.entity.Event;
 
 import jakarta.annotation.PostConstruct;
@@ -89,9 +90,21 @@ public class EventController {
                 .build());
     }
     @GetMapping("events")
-    public ResponseEntity<?> getEventLists() {
-        return ResponseEntity.ok(eventList);
+    public ResponseEntity<?> getEventLists(@RequestParam(value = "_limit",
+            required = false) Integer perPage, @RequestParam(value="_page", required = false)Integer page){
+        perPage = perPage == null?eventList.size(): perPage;
+        Integer firstIndex = (page-1)*perPage;
+        List<Event> output = new ArrayList<>();
+        try {
+            for (int i = firstIndex; i < firstIndex + perPage; i++) {
+                output.add(eventList.get(i));
+            }
+            return ResponseEntity.ok(output);
+        }catch (IndexOutOfBoundsException ex) {
+            return ResponseEntity.ok(output);
+        }
     }
 }
+
 
 
