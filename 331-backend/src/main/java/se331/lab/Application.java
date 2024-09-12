@@ -18,9 +18,12 @@ public class Application {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:5173")
-                        .exposedHeaders("x-total-count");
+                registry.addMapping("/*")
+                        .allowedOrigins("http://localhost:5173");
+//                        .exposedHeaders("x-total-count");
+                registry.addMapping("events/*")
+                        .allowedOrigins("http://localhost:5173");
+//                        .exposedHeaders("x-total-count");
             }
         };
     }
