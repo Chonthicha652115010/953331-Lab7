@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class EventServicelmpl implements EventService {
+public class EventServiceImpl implements EventService {
 
     final EventDao eventDao;
     @Override
