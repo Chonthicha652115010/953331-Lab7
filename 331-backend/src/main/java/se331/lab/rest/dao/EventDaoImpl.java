@@ -1,13 +1,17 @@
 package se331.lab.rest.dao;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import se331.lab.rest.entity.Event;
 
 import java.util.ArrayList;
 import java.util.List;
-
 @Repository
+@Profile("manual")
 public class EventDaoImpl implements EventDao {
     List<Event> eventList;
 
@@ -25,7 +29,6 @@ public class EventDaoImpl implements EventDao {
                 .petAllowed(true)
                 .organizer("Kat Laydee")
                 .build());
-
         eventList.add(Event.builder()
                 .id(456L)
                 .category("food")
@@ -38,14 +41,15 @@ public class EventDaoImpl implements EventDao {
                 .organizer("Fern Pollin")
                 .build());
 
+        // Add the rest of the events that are the same as in the db.json file
         eventList.add(Event.builder()
                 .id(789L)
                 .category("sustainability")
                 .title("Beach Cleanup")
                 .description("Help pick up trash along the shore.")
-                .location("Playa Del Carmen")
-                .date("July 22, 2022")
-                .time("11:00")
+                .location("Sandy Shores")
+                .date("April 22, 2022")
+                .time("9:00")
                 .petAllowed(false)
                 .organizer("Carey Wales")
                 .build());
@@ -86,24 +90,26 @@ public class EventDaoImpl implements EventDao {
                 .organizer("Brody Kill")
                 .build());
     }
-
     @Override
-    public Integer getEventSize(){
+    public Integer getEventSize() {
         return eventList.size();
     }
 
     @Override
-    public List<Event> getEvents(Integer pageSize, Integer page){
-        pageSize = pageSize == null ? eventList.size() : pageSize;
-        page = page == null ? 1 : page;
-        int firstIndex = (page-1)*pageSize;
-        return eventList.subList(firstIndex, firstIndex+pageSize);
+    public Page<Event> getEvents(Integer pageSize, Integer page) {
+        pageSize = pageSize == null ? eventList.size() : pageSize; // Use eventList size if pageSize is null
+        page = page == null ? 1 : page; // Default to page 1 if page is null
+
+        int firstIndex = (page - 1) * pageSize;
+//        int lastIndex = Math.min(firstIndex + pageSize, eventList.size());
+        return new PageImpl<Event>(eventList.subList(firstIndex, firstIndex + pageSize), PageRequest.of(page, pageSize), eventList.size());
+
     }
+
 
     @Override
     public Event getEvent(Long id) {
         return eventList.stream().filter(event -> event.getId().equals(id)).findFirst().orElse(null);
     }
-
 
 }

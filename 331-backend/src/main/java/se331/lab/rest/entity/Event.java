@@ -1,18 +1,18 @@
 package se331.lab.rest.entity;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
 @Data
 @Builder
-@Entity
 @NoArgsConstructor
+@Entity
 @AllArgsConstructor
 public class Event {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Exclude
     Long id;
     String category;
