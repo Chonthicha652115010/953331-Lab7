@@ -8,5 +8,6 @@ import java.util.List;
 public interface EventDao {
     Integer getEventSize();
     Page<Event> getEvents(Integer pageSize, Integer page);
-    Event getEvent(Long id);
+    Event getEventById(Long id);
+    Event saveEvent(Event event);
 }

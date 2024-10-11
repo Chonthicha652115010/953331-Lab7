@@ -81,7 +81,7 @@ public class InitApp implements ApplicationListener<ApplicationReadyEvent> {
         Participant participant = Participant.builder()
                 .name(name)
                 .telNo(telNo)
-                .eventHistory(new ArrayList<>())
+                .EventHistory(new ArrayList<>())
                 .build();
         return participantRepository.save(participant);
     }
